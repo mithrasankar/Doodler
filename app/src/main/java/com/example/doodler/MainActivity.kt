@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         // brush size listener
         brushSizeSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                val scaledSize = (1 + progress / 2f)
+                val scaledSize = (10 + progress / 2f)
                 doodleView.setBrushSize(scaledSize)
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
