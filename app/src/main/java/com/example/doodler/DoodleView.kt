@@ -7,16 +7,17 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.ContextCompat
 
 class DoodleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
-    // Store paths with their respective paints
+    // paths
     private val paths = mutableListOf<Pair<Path, Paint>>()
 
-    // Current paint and path
+    // current
     private var currentPaint = Paint().apply {
-        color = resources.getColor(R.color.purple_200) // Default to purple
-        strokeWidth = 10f // Default stroke size
+        color = resources.getColor(R.color.purple_200)
+        strokeWidth = 10f
         isAntiAlias = true
         strokeJoin = Paint.Join.ROUND
         strokeCap = Paint.Cap.ROUND
@@ -27,12 +28,11 @@ class DoodleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        // Draw all paths with their corresponding paints
+        //  all paths
         for ((path, paint) in paths) {
             canvas.drawPath(path, paint)
         }
-
-        // Draw the current path
+        // current path
         canvas.drawPath(currentPath, currentPaint)
     }
 
@@ -42,36 +42,30 @@ class DoodleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                // Create a new path for the current stroke
+                // new path for current stroke
                 currentPath = Path().apply { moveTo(x, y) }
             }
             MotionEvent.ACTION_MOVE -> {
                 currentPath.lineTo(x, y)
             }
             MotionEvent.ACTION_UP -> {
-                // Add the completed path to the list along with its paint
+                // add the completed path with its color
                 paths.add(Pair(currentPath, Paint(currentPaint)))
             }
         }
-
-        invalidate() // Redraw the view
+        invalidate()
         return true
     }
-
-    // Change brush size
     fun setBrushSize(size: Float) {
         currentPaint.strokeWidth = size
     }
-
-    // Change brush color
+    // brush color
     fun setColor(color: Int) {
         currentPaint.color = color
     }
-
-    // Clear the canvas
     fun clearCanvas() {
-        paths.clear() // Clear all saved paths
-        currentPath.reset() // Reset the current path
-        invalidate() // Redraw the view
+        paths.clear()
+        currentPath.reset()
+        invalidate()
     }
 }

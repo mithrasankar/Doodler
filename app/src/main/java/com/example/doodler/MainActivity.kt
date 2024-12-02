@@ -16,21 +16,20 @@ class MainActivity : ComponentActivity() {
         val color1Button = findViewById<Button>(R.id.color1)
         val color2Button = findViewById<Button>(R.id.color2)
 
-        // Set default brush size
+        // default brush
         doodleView.setBrushSize(brushSizeSeekBar.progress.toFloat())
 
-        // Brush size change listener
+        // brush size listener
         brushSizeSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val scaledSize = (1 + progress / 2f)
                 doodleView.setBrushSize(scaledSize)
             }
-
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        // Color buttons listeners
+        // buttons listeners
         color1Button.setOnClickListener {
             doodleView.setColor(resources.getColor(R.color.purple_200))
         }
@@ -39,7 +38,6 @@ class MainActivity : ComponentActivity() {
             doodleView.setColor(resources.getColor(R.color.teal_700))
         }
 
-        // button listener
         clearButton.setOnClickListener {
             doodleView.clearCanvas()
         }
