@@ -7,7 +7,6 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.content.ContextCompat
 
 class DoodleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
