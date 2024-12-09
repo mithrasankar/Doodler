@@ -1,70 +1,75 @@
 package com.example.doodler
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-
 class DoodleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
+    private val paint = Paint()
+    private val path = Path()
+    private lateinit var bitmap: Bitmap
+    private lateinit var canvas: Canvas
 
-    // paths
-    private val paths = mutableListOf<Pair<Path, Paint>>()
-
-    // current
-    private var currentPaint = Paint().apply {
-        color = resources.getColor(R.color.purple_200)
-        strokeWidth = 10f
-        isAntiAlias = true
-        strokeJoin = Paint.Join.ROUND
-        strokeCap = Paint.Cap.ROUND
-        style = Paint.Style.STROKE
+    init {
+        paint.color = Color.BLACK
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 5f
+        paint.isAntiAlias = true
     }
-    private var currentPath = Path()
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        canvas = Canvas(bitmap)
+    }
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
         //  all paths
-        for ((path, paint) in paths) {
-            canvas.drawPath(path, paint)
-        }
         // current path
-        canvas.drawPath(currentPath, currentPaint)
+        canvas.drawBitmap(bitmap, 0f, 0f, null)
+        canvas.drawPath(path, paint)
+    }
+
+    fun getColor(): Int {
+        return paint.color
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        val x = event.x
-        val y = event.y
-
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                // new path for current stroke
-                currentPath = Path().apply { moveTo(x, y) }
+                path.moveTo(event.x, event.y)
+                return true
             }
             MotionEvent.ACTION_MOVE -> {
-                currentPath.lineTo(x, y)
+                path.lineTo(event.x, event.y)
             }
             MotionEvent.ACTION_UP -> {
-                // add the completed path with its color
-                paths.add(Pair(currentPath, Paint(currentPaint)))
+                canvas.drawPath(path, paint)
+                path.reset()
             }
         }
         invalidate()
         return true
     }
+
     fun setBrushSize(size: Float) {
-        currentPaint.strokeWidth = size
+        paint.strokeWidth = size
     }
+
     // brush color
     fun setColor(color: Int) {
-        currentPaint.color = color
+        paint.color = color
     }
+
     fun clearCanvas() {
-        paths.clear()
-        currentPath.reset()
+        path.reset()
+        canvas.drawColor(Color.WHITE)
         invalidate()
     }
+
+    fun setOpacity(opacity: Int) {
+        paint.alpha = opacity
+    }
+
 }
