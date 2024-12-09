@@ -1,6 +1,6 @@
 # My Doodler
 
-The Doodler app allows users to draw on a canvas using customizable brush strokes. Users can select colors and clear the drawing. The brush stroke size can be adjusted via a SeekBar, and two color buttons allow users to switch between two colors.
+The Doodler app allows users to draw on a canvas using customizable brush strokes. Users can select colors and clear the drawing. The brush stroke, opacity, and eraser can be adjusted via a SeekBar, and a color picker button allows users to pick from an array of colors.
 
 ## How to Run the Program
 
